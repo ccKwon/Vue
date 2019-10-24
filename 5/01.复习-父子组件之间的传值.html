@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <script src="./lib/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+        <com1 :parentmsg="msg"  @func = "getdataFromson"></com1>
+
+
+    </div>
+
+    <template id="tmpl">
+        <div>
+            <h3>这是子组件 --- {{ parentmsg }}</h3>
+            <input type="button" value="传值给父组件" @click = "sendMsg">
+        </div>
+    </template>
+
+    <script>
+
+        var com1 = {
+            template: '#tmpl',
+            data() {
+                return {
+                    msg: '33333'
+                }
+            },
+            props: ['parentmsg'],
+
+            methods: {
+                sendMsg() {
+                    this.$emit('func', this.msg)
+                }
+            },
+
+        }
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '2222',
+                msg2: ''
+            },
+
+            methods: {
+                getdataFromson(data) {
+                    this.msg2 = data;
+                    console.log(this.msg + this.msg2);
+                }
+            },
+
+            components: {
+                com1,
+            }
+        })
+
+    </script>
+</body>
+
+</html>

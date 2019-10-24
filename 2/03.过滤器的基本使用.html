@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./lib/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <p>{{ msg | msgFormat('6')}}</p>
+    </div>
+
+
+    <script>
+
+        // 定义一个 Vue 全局的过滤器 叫做msgFormat
+
+        Vue.filter('msgFormat', function (msg, arg) {
+
+            // 字符串的 replace 方法, 第一个参数,除了可写一个 字符串以外 还可以定义一个正则
+            return msg.replace(/4/g, arg)
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '1234444444'
+            },
+
+            methods: {
+
+            },
+        });
+    </script>
+</body>
+
+</html>

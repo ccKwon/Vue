@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+    <title>Document</title>
+
+
+
+    <!-- <style>
+            .v-enter,
+            .v-leave-to {
+                opacity: 0;
+                transform: translateX(150px);
+            }
+        
+
+        /* 
+           v-enter-active 入场动画时间段
+           v-leave-active 离场动画时间段
+         */
+            .v-enter-active,
+            .v-leave-active {
+                transition: all 0.8s ease;
+            }
+        </style> -->
+</head>
+
+
+
+<body>
+    <div id="app">
+        <input type="button" value="toggle" @click='flag = !flag'>
+
+        <!-- bounceIn 入场  bounceOut 离场动画 -->
+        <!-- <transition enter-active-class = "animate bounceIn" leave-active-class = "animate bounceOut">
+            <h3 v-if="flag">111</h3>
+        </transition> -->
+
+        <!-- 使用 :duration = "毫秒值" 来统一设置 入场 和 离场 时候的动画时长 -->
+        <!-- <transition enter-active-class = "animate bounceIn" leave-active-class = "animate bounceOut" :duration = "400">
+                <h3 v-if="flag" class="animate">111</h3>
+            </transition> -->
+
+        <!-- 使用 :duration = "{ enter:200, leave:400 }" 来分别设置 入场的时长 和 离场的时长 -->
+        <transition 
+        enter-active-class="animate bounceIn"
+        leave-active-class="animate bounceOut" 
+        :duration = "{ enter:200, leave:400 }">
+            <h3 v-if="flag" class="animate">111</h3>
+        </transition>
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: false
+            },
+
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

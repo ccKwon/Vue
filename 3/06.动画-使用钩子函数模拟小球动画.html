@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+
+    <style>
+        .ball {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="哒哒哒" @click='flag = !flag'>
+
+        <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+
+            <div class="ball" v-show='flag'></div>
+
+        </transition>
+    </div>
+
+
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+            },
+
+            methods: {
+                // 动画钩子函数的第一个参数：el 是一个原生的 JS DOM对象
+                beforeEnter(el) {
+                    el.style.transform = "translate(0, 0)";
+                },
+
+                enter(el, done) {
+                    el.offsetWidth;
+                    el.style.transform = "translate(150px, 450px)";
+                    el.style.transition = 'all 1s ease';
+
+                    // done 起始就是 afterEnter 函数 done 是该函数的引用
+                    done();
+                },
+
+                afterEnter(el) {
+                    this.flag = !this.flag;
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

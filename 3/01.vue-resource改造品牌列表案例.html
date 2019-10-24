@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <script src=".//lib/vue-resource.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+
+    <div id="app">
+
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加品牌</h3>
+            </div>
+            <div class="panel-body form-inline">
+
+                <label>
+                    Name:
+                    <input type="text" v-model="name" class="form-control">
+                </label>
+
+
+                <input type="button" value="添加" @click="add" class="btn btn-primary">
+            </div>
+        </div>
+
+
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Ctime</th>
+                    <th>Opertion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list" :key="item.id">
+                    <td> {{item.id}} </td>
+                    <td> {{item.name}} </td>
+                    <td> {{item.Ctime}} </td>
+                    <td>
+                        <a href="" @click.prevent='del(item.id)'>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <script>
+        // 如果我们通过全局配置了请求的数据接口根域名 则在每次单独发起http 请求的时候， 
+        // 请求的 url 路径 应该以相对路径开头 前面不能带'/' 否则 不会启用根路径拼接
+        Vue.http.options.root = 'http://www.liulongbin.top:3005';
+        // 全局启用 emulateJSON 选项
+        Vue.http.options.emulateJSON = true;
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: '',
+                list: [
+                    { id: 1, name: '2222', Ctime: new Date() },
+                    { id: 2, name: '3333', Ctime: new Date() },
+                ]
+            },
+
+            created() {
+                this.getAllList();
+            },
+
+            methods: {
+
+                getAllList() { // 获取所有的品牌列表
+                    this.$http.get('api/getprodlist').then(result => {
+                        var result = result.body;
+                        if (result.status === 0) {
+                            this.list = result.message;
+
+                        } else {
+                            alert('获取数据失败');
+                        }
+                    })
+                },
+
+                // add() {
+                //     this.$http.post('api/addproduct', { name: this.name }, { emulateJSON: true })
+                //         .then(result => {
+                //             if (result.body.status === 0) {
+                //                 // 添加完成后 只需要手动调用一下 getAllList() 就能刷新品牌列表
+                //                 this.getAllList();
+                //                 this.name = '';
+
+                //             } else {
+                //                 alert('获取数据失败');
+                //             }
+                //         })
+                // },
+
+                add() {
+                    this.$http.post('api/addproduct', { name: this.name })
+                        .then(result => {
+                            if (result.body.status === 0) {
+                                // 添加完成后 只需要手动调用一下 getAllList() 就能刷新品牌列表
+                                this.getAllList();
+                                this.name = '';
+
+                            } else {
+                                alert('获取数据失败');
+                            }
+                        })
+                },
+
+                del(id) {
+                    this.$http.get("api/delproduct/" + id).then(result => {
+                        if (result.body.status === 0) {
+                            this.getAllList();
+                        }else {
+                            alert('删除失败');
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
